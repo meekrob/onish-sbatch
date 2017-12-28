@@ -1,0 +1,5 @@
+#!/bin/sh
+if [ $# -eq 0 ];
+then
+    echo "install project_dir"
+fi

@@ -1,0 +1,20 @@
+#!/bin/bash
+# use samtools to get the number of reads in a NON-paired-end sam or bam file
+# The info is from https://www.biostars.org/p/138116/
+
+if [ $# -gt 1 ];
+then
+    for bamfile in $@;
+    do
+        echo -n "$bamfile: "
+        samtools view -F 0x904 -c $bamfile
+    done
+
+elif [ $# -eq 1 ];
+then
+    samtools view -F 0x904 -c $1
+else
+    echo "$0 bamfile(s)"
+fi
+
+# Also, the output seems to match "samtools flagstat" line 4. Number mapped.
