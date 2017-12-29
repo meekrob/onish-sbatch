@@ -50,8 +50,7 @@ unloadbx() {
 unloadbx nondestructive
 
 # directory for bioinformatics-related bin, lib, include, etc and other directories
-BX=/projects/dcking@colostate.edu
-BX_ENV="/projects/dcking@colostate.edu"
+BX_ENV="${BASH_SOURCE[0]}" # the directory in which this file resides
 
 
 # store previous variables
