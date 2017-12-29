@@ -1,5 +1,21 @@
 #!/bin/sh
+# Very special file transfer
+RSYNC_OPTIONS="--progress -r -u"
+
+# Usage
 if [ $# -eq 0 ];
 then
-    echo "install project_dir"
+    echo "Usage: install project_dir"
+    exit 1
 fi
+
+# Copy files with rsync
+dest_dir=$1
+
+if [ ! -e  $dest_dir ];
+then
+    echo "creating $dest_dir"
+    mkdir -v $dest_dir
+fi
+
+rsync $RSYNC_OPTIONS template_project_dir/ $dest_dir
