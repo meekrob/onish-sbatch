@@ -48,7 +48,7 @@ def parse_line_to_dict(line):
     # the three that are the same
     r['chrom'] = fields[0]
     r['start'] = int(fields[1]) - 1
-    r['end'] = int(fields[2]) - 1
+    r['end'] = int(fields[2]) 
     r['strand'] = '.'
 
     r['abs_summit'] = int(fields[4]) - 1
