@@ -1,3 +1,5 @@
+##BXDIR= # needs to be set during configuration/install
+alias loadbx='source $BXDIR/paths.bashrc'
 alias sa='sacct -X --format JobID,JobName,AllocCPUS,State,ExitCode,Elapsed,TimeLimit,Submit,Start,End'
 alias sq='squeue -u $USER'
 echo_notfound()
