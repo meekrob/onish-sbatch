@@ -12,3 +12,4 @@ color="0,0,0"
 cmd="MACS2xls_to_bed_9.py $xls $color"
 echo $cmd
 time $cmd
+pychecksum.py ${xls/.xls/.bb} sha512

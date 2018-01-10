@@ -31,6 +31,6 @@ do
     cmd="bedGraphToBigWig $sorted $chromlen $bw"
     echo -e "\t$cmd"
     time eval $cmd
-    echo "---------"
+    pychecksum.py $bw sha512
 done
 

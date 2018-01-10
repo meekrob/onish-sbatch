@@ -4,6 +4,12 @@
 # a single line
 resolve_paths() {
     list=$(grep -v '#' $1)
+    list_ext=$?;
+    if [ $list_ext != 0 ];
+    then 
+        echo "previous line exitted with $list_ext"; 
+        exit $list_ext;
+    fi
     paths=""
     while read -r line;
     do
