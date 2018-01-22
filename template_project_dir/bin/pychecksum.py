@@ -17,12 +17,13 @@ def main():
         print "usage: %s" % progname, "file_to_check", "algorithm", "digest", "\n\t-check 'digest' against computed from file_to_check, return 0 if match, 1 otherwise"
 
 
-        ###### CHECK FILE OF FILES ######
+        ###### CHECK DIGEST AGAINST FILE OF FILES ######
+        # checksum file is ^digest filename$ one per line
         # usage 2a:file listing directory contents and their digest; Filename like filename.md5
-        print "usage: %s" % progname, "checksum.algorithm", 
+        print "usage: %s" % progname, "filename.algorithm", 
         print "\n\t-%s" % filecontents_str
 
-        # usage 2b:(file listing dir contents. Filename can be anything, passed in like sha256=filename
+        # usage 2b:file listing dir contents. Filename can be anything, passed in like sha256=filename
         print "usage: %s" % progname, "algorithm=checksumfile.txt", 
         print "\n\t-%s" % filecontents_str
 
@@ -47,9 +48,12 @@ def main():
 
         for line in file(checksum_file):
             digester = get_func(algorithm)
-            expected, file_to_check = line.split()
+            file_to_check, expected = line.split()
+            print >>sys.stderr, "checking", file_to_check, "with", algorithm, "to get", expected
             if os.path.exists( file_to_check ):
                 print file_to_check, expected, checkfile(file_to_check, digester, expected)
+            else:
+                print >>sys.stderr, "file", file_to_check, "was not found"
 
     # USAGE 1
     elif len(sys.argv) >= 3:
