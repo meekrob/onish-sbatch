@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --ntasks=12
-#SBATCH --time=0:05:30
+#SBATCH --ntasks=24
+#SBATCH --time=0:10:00
 #SBATCH --qos=normal
 #SBATCH --output=outfiles/%j-bowtie.out
 echo "[$0] $SLURM_JOB_NAME $@" # log the command line
@@ -11,7 +11,7 @@ source $PROJ_DIR/paths.bashrc
 infile=$1
 echo "infile is $infile"
 
-root=${infile%%.seq.dusted} # delete the file extension
+root=${infile%%.fastq} # delete the file extension
 
 echo "root is $root"
 
@@ -25,7 +25,7 @@ outfile=${root}.sam
 echo "outfile is $outfile"
 
 # run bowtie
-cmd="bowtie -a -q -S --nomaqround -m 1 -p 12 --best --chunkmbs 200 --seed 123 $BOWTIE_INDEXES/ce11 $infile $outfile"
+cmd="bowtie -a -q -S --nomaqround -m 1 -p 24 --best --chunkmbs 200 --seed 123 $BOWTIE_INDEXES/ce11 $infile $outfile"
 echo $cmd
 time $cmd
 

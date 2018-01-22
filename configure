@@ -1,0 +1,2 @@
+#!/bin/bash
+# TODO: come up with a way of recording the destination directory as per ./configure --prefix=

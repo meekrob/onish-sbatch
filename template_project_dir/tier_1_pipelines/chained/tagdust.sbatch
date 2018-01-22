@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks=12
-#SBATCH --time=0:05:30
+#SBATCH --time=0:10:00
 #SBATCH --qos=normal
 #SBATCH --output=outfiles/%j-tagdust.out
 echo "[$0] $SLURM_JOB_NAME $@" # log the command line
@@ -9,7 +9,7 @@ echo "[$0] $SLURM_JOB_NAME $@" # log the command line
 PROJ_DIR=/projects/dcking@colostate.edu
 source $PROJ_DIR/paths.bashrc
 infile=$1
-root=${infile%%.seq} # delete the file extension
+root=${infile%%.fastq} # delete the file extension
 echo "infile is $infile"
 echo "root is $root"
 
@@ -19,9 +19,9 @@ then
     exit 1;
 fi
 
-outfile=${infile}.seq.dusted
+outfile=${root}.dusted.fastq
 echo "outfile is $outfile"
-artifacts=${infile}.seq.dusted.artifacts
+artifacts=${root}.dusted.artifacts
 SPA=/projects/dcking@colostate.edu/support_data/solexa-library-seqs.fasta
 cmd="tagdust -f .001 $SPA $infile -o $outfile -a $artifacts"
 echo $cmd

@@ -10,7 +10,7 @@ PROJ_DIR=/projects/dcking@colostate.edu
 source $PROJ_DIR/paths.bashrc
 
 infile=$1
-root=${infile%%.seq.dusted} # delete the file extension
+root=${infile%%.fastq} # delete the file extension
 echo "infile is $infile"
 echo "root is $root"
 

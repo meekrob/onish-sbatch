@@ -22,6 +22,12 @@ outfile=${root}.sorted.bam
 cmd="samtools sort -o $outfile $infile"
 time eval $cmd
 
+# also create the index, will append a .bai
+cmd="samtools index -b $outfile"
+echo $cmd
+
+time eval $cmd
+
 if [ $? -ne 0 ]
 then
     >&2 echo "samtools command failed."

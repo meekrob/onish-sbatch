@@ -3,7 +3,6 @@
 #SBATCH --ntasks=1
 #SBATCH --time=0:10:00
 #SBATCH --qos=normal
-#SBATCH --partition=smem
 #SBATCH --output=outfiles/%j-smem-bed-to-bw.out
 echo "[$0] $SLURM_JOB_NAME $@" # log the command line
 
