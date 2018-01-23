@@ -4,6 +4,7 @@
 #SBATCH --time=0:10:00
 #SBATCH --qos=normal
 #SBATCH --output=outfiles/%j-smem-bed-to-bw.out
+#SBATCH --partition=smem
 echo "[$0] $SLURM_JOB_NAME $@" # log the command line
 
 PROJ_DIR=/projects/dcking@colostate.edu
@@ -19,6 +20,9 @@ then
 fi
 # the outfile name is not specified in the command but will take the following form:
 outfile=${root}x150n.bw
+# this command creates at least two tempfiles, use one on scratch space
+export TMPDIR=$SLURM_SCRATCH
+export TEMPDIR=$SLURM_SCRATCH
 cmd="bedToBw.sh $infile 150 $cl -n -bw"
 echo $cmd
 eval time $cmd

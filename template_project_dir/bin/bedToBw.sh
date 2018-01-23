@@ -119,14 +119,18 @@ BLACK='\033[0;30m'
         #printf "bedToBw:   Bed file extend by $n bases.\n"
         
         printf "bedToBw:   Sorting\n"
-        tmp_sort_bed="sort_temp_$1"
+        #tmp_sort_bed="sort_temp_$1"
+        tmp_sort_bed=$(mktemp -t bed_sort.XXXXX)
+        echo "sort tmp_file is $tmp_sort_bed"
 
 	    cmd1="bedtools sort -i ${1} > $tmp_sort_bed"
         echo -e "\t\t$cmd1"
         eval time $cmd1
         
         printf "bedToBw:   Extending reads by ${n} bases\n"
-        tmp_slop_bed="slop_temp_$1"
+        #tmp_slop_bed="slop_temp_$1"
+        tmp_slop_bed=$(mktemp -t bed_splot.XXXXX)
+        echo "slop tmp_file is $tmp_slop_bed"
         cmd2="bedtools slop -s -i $tmp_sort_bed -g ${3} -l 0 -r ${n} > $tmp_slop_bed"
         echo -e "\t\t$cmd2"
         eval time $cmd2
