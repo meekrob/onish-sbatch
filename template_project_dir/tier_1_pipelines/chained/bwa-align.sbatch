@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --time=0:15:00
+#SBATCH --time=1:00:00
 #SBATCH --qos=normal
 #SBATCH --output=outfiles/%j-bwa.out
 echo "[$0] $SLURM_JOB_NAME $@" # log the command line
@@ -18,6 +18,6 @@ cmd="bwa mem $genome $input > $output"
 echo $cmd
 time eval $cmd
 # submit the next command in chain
-sbatch pipeline/sam-to-bam.sbatch $output
+sbatch -o ${output/.sam/.bam}.log-%j  pipeline/sam-to-bam.sbatch $output
 # filestamp
 pychecksum.py $output md5

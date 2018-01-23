@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --ntasks=12
+#SBATCH --ntasks=1
 #SBATCH --time=0:05:30
 #SBATCH --qos=normal
 #SBATCH --output=outfiles/%j-sam-to-bam.out
@@ -30,6 +30,7 @@ then
 fi
 
 #launch next job
-sbatch pipeline/bam-sort.sbatch $outfile
+next_log=${root}.sorted.bam.log-%j # the next job's outfile plus .log-%j
+sbatch -o $next_log pipeline/bam-sort.sbatch $outfile
 
 
