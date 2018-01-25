@@ -38,4 +38,7 @@ then
 fi
 
 #launch next job
-sbatch pipeline/bed-to-bw.sbatch $outfile
+next_outfile=${outfile%%.bed}.x150n.bw 
+log=${next_outfile}.log-%j # literal '%j'
+sbatch -o $log pipeline/bed-to-bw.sbatch $outfile
+pychecksum.py $outfile md5

@@ -33,3 +33,4 @@ then
     exit $?
 fi
 
+pychecksum.py $outfile md5

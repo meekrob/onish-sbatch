@@ -19,6 +19,9 @@ fi
 
 outfile=${root}.sorted.bam
 
+# will samtools make use of this setting?
+export TMPDIR=$SLURM_SCRATCH
+export TEMPDIR=$SLURM_SCRATCH
 cmd="samtools sort -o $outfile $infile"
 time eval $cmd
 
@@ -35,4 +38,7 @@ then
 fi
 
 #launch next job
-sbatch pipeline/bam-to-bed.sbatch $outfile
+next_outfile=${infile/.bam/.bed}
+log=${next_outfile}.log-%j
+sbatch -o $log pipeline/bam-to-bed.sbatch $outfile
+pychecksum.py $outfile md5

@@ -18,6 +18,6 @@ cmd="bwa mem $genome $input > $output"
 echo $cmd
 time eval $cmd
 # submit the next command in chain
-sbatch -o ${output/.sam/.bam}.log-%j  pipeline/sam-to-bam.sbatch $output
+sbatch -o ${output/.sam/.bam}.log-%j  pipeline/uchicago-sam-to-bam.sbatch $output
 # filestamp
 pychecksum.py $output md5
