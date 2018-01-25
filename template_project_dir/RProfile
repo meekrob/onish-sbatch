@@ -1,0 +1,17 @@
+# This file is invoked by R if the environment variable R_PROFILE_USER is set.
+# Since this overrides "~/.RProfile", it is sourced at the end of this file
+.bx = list()
+.bx$PRJ='/projects/dcking@colostate.edu/'
+.bx$PRJR='/projects/dcking@colostate.edu/R'
+.libPaths(.bx$PRJR)
+
+message("BX environment loaded. Settings include .libPaths() and variable '.bx'")
+
+# Execute user profile
+if(file.exists('~/.RProfile')) {
+    source('~/.RProfile');
+}
+# Execute user profile
+if(file.exists('~/.Rprofile')) {
+    source('~/.Rprofile');
+}

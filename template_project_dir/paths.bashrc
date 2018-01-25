@@ -50,7 +50,8 @@ unloadbx() {
 unloadbx nondestructive
 
 # directory for bioinformatics-related bin, lib, include, etc and other directories
-BX_ENV="${BASH_SOURCE[0]}" # the directory in which this file resides
+BX=/projects/dcking@colostate.edu
+BX_ENV="/projects/dcking@colostate.edu"
 
 
 # store previous variables
@@ -69,6 +70,9 @@ then
     _OLD_MANPATH="$MANPATH"
 fi
 echo -ne "Loading BX Environment... "
+
+# R
+export R_PROFILE_USER=$BX_ENV/RProfile
 
 # binaries
 BX_PATH=$BX_ENV/bin # macs2, others
