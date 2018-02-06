@@ -90,14 +90,24 @@ BOWTIE_INDEXES=$BX_ENV/support_data/bowtie-index
 # runtime libraries
 BX_LD=$BX_ENV/lib:$BX_ENV/lib/tbb # needed by UCSC-UserApps, bowtie1,2
 
-export PYTHONPATH=$BX_ENV/lib/python2.7/site-packages/
+if python -V 2>&1 | grep -q 2.7;
+then
+    export PYTHONPATH=$BX_ENV/lib/python2.7/site-packages/
+fi
+
+if python -V 2>&1 | grep -q 3.5;
+then
+    export PYTHONPATH=$BX_ENV/lib/python3.5/site-packages/
+fi
+
+
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BX_LD
 export PATH=$PATH:$BX_PATH
 export MANPATH=$MANPATH:$BX_ENV/share/man
 export PERL5LIB=$BX_ENV/lib/perl
 
 # on the compile node, python for MACS, java for fastqc and javaGenomicsToolkit
-if ! module load intel python jdk
+if ! module load intel jdk
 then
     echo "Error with module command."
 fi
