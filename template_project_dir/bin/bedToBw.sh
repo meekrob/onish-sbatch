@@ -111,7 +111,7 @@ BLACK='\033[0;30m'
         
         echo -e "bedToBw:   Normalization factor is: $scale"
 
-# 5) Sort using "bedtools sort"
+# 5) Sort using "linux sort"
 # 6) Extend reads by final length minus the read length ($2 - $rlength)
 # 7) Convert to a bedgraph using "genomeCoverageBed" (bedtools)
         final=$2
@@ -119,11 +119,10 @@ BLACK='\033[0;30m'
         #printf "bedToBw:   Bed file extend by $n bases.\n"
         
         printf "bedToBw:   Sorting\n"
-        #tmp_sort_bed="sort_temp_$1"
         tmp_sort_bed=$(mktemp -t bed_sort.XXXXX)
         echo "sort tmp_file is $tmp_sort_bed"
 
-	    cmd1="bedtools sort -i ${1} > $tmp_sort_bed"
+        cmd1="sort -k1,1 -k2,2n $1 > $tmp_sort_bed"
         echo -e "\t\t$cmd1"
         eval time $cmd1
         
