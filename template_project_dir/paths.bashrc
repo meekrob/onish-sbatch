@@ -22,6 +22,11 @@ unloadbx() {
         export PYTHONPATH
         unset _OLD_PYTHONPATH
     fi
+    if ! [ -z "${_OLD_CLASSPATH+_}" ]; then
+        CLASSPATH="$_OLD_CLASSPATH"
+        export CLASSPATH
+        unset _OLD_CLASSPATH
+    fi
     if ! [ -z "${_OLD_LD_LIBRARY_PATH+_}" ]; then
         LD_LIBRARY_PATH="$_OLD_LD_LIBRARY_PATH"
         export LD_LIBRARY_PATH
@@ -47,19 +52,25 @@ unloadbx() {
     fi
 }
 
+##
+## Load bx.
+##
 unloadbx nondestructive
 
-# directory for bioinformatics-related bin, lib, include, etc and other directories
+# Directory for bioinformatics-related bin, lib, include, etc and other directories
 BX=/projects/dcking@colostate.edu
 BX_ENV="/projects/dcking@colostate.edu"
 
-
-# store previous variables
+# Store previous variables
 _OLD_PATH="$PATH"
 
 if ! [ -z "${PYTHONPATH+_}" ]
 then
     _OLD_PYTHONPATH="$PYTHONPATH"
+fi
+if ! [ -z "${CLASSPATH+_}" ]
+then
+    _OLD_CLASSPATH="$CLASSPATH"
 fi
 if ! [ -z "${LD_LIBRARY_PATH+_}" ]
 then
@@ -69,7 +80,7 @@ if ! [ -z "${MANPATH+_}" ]
 then
     _OLD_MANPATH="$MANPATH"
 fi
-echo -ne "Loading BX Environment... "
+echo -ne "Loading BX Environment... " >&2
 
 # R
 export R_PROFILE_USER=$BX_ENV/RProfile
@@ -80,40 +91,59 @@ BX_PATH=$BX_PATH:$BX_ENV/bin/bedtools2 # bedtools
 BX_PATH=$BX_PATH:$BX_ENV/bin/bowtie1 # bowtie1
 BX_PATH=$BX_PATH:$BX_ENV/bin/bowtie2 # bowtie2
 BX_PATH=$BX_PATH:$BX_ENV/bin/sratoolkit # sratoolkit
+BX_PATH=$BX_PATH:$BX_ENV/bin/SPP # phantompeaktools
 BX_PATH=$BX_PATH:$BX_ENV/bin/UCSC-UserApps/ # UCSC
 BX_PATH=$BX_PATH:$BX_ENV/bin/FastQC # FastQC/fastqc wrapper script is here, along with the endless java nonsense
 BX_PATH=$BX_PATH:$BX_ENV/bin/cufflinks # cufflinks, linked to pre-compiled binaries in src
 BX_PATH=$BX_PATH:$BX_ENV/bin/tophat # tophat, linked to pre-compiled binaries in src
+BX_PATH=$BX_PATH:$BX_ENV/bin/hisat2 # hisat2 utils
 
 # bowtie index dir needed for alignments
 BOWTIE_INDEXES=$BX_ENV/support_data/bowtie-index
 # runtime libraries
 BX_LD=$BX_ENV/lib:$BX_ENV/lib/tbb # needed by UCSC-UserApps, bowtie1,2
 
-if python -V 2>&1 | grep -q 2.7;
-then
-    export PYTHONPATH=$BX_ENV/lib/python2.7/site-packages/
-fi
+#set -x
+#if python -V 2>&1 | /usr/bin/grep -q 2.7;
+#then
+export PYTHONPATH=$BX_ENV/lib/python2.7/site-packages/
+#fi
 
-if python -V 2>&1 | grep -q 3.5;
-then
-    export PYTHONPATH=$BX_ENV/lib/python3.5/site-packages/
-fi
+#if python -V 2>&1 | /usr/bin/grep -q 3.5;
+#then
+    #export PYTHONPATH=$BX_ENV/lib/python3.5/site-packages/
+#fi
+
+whichpy=$(which python)
+
+### ant build system for java 
+BX_CLASSPATH=$BX_ENV/src/apache-ant-1.10.3/lib/*:$CLASSPATH
 
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BX_LD
 export PATH=$PATH:$BX_PATH
 export MANPATH=$MANPATH:$BX_ENV/share/man
 export PERL5LIB=$BX_ENV/lib/perl
+export CLASSPATH=$CLASSPATH
+
+
 
 # on the compile node, python for MACS, java for fastqc and javaGenomicsToolkit
-if ! module load intel jdk
+if ! module load intel jdk python
 then
-    echo "Error with module command."
+    echo "Error with module command." >&2
 fi
 
-echo -e "Environment loaded."
+echo -e "Environment loaded." >&2 
 if [ -z "$ENVIRONMENT" ];
 then
-     echo -e "Type \e[90m'man paths.bashrc'\e[30m for more information."
+     echo "Type 'man paths.bashrc' for more information." >&2
+     echo "Type 'loadpy3' to switch to python 3." >&2
 fi;
+
+loadpy3()
+{
+    ml python/3.5.1
+    export PYTHONPATH=$BX_ENV/lib/python3.5/site-packages/
+    echo "PYTHONPATH is now $PYTHONPATH" >&2 
+}
